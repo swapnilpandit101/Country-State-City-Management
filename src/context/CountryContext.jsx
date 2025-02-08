@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const CountryContext = createContext();
 
@@ -6,21 +7,17 @@ export const CountryProvider = ({ children }) => {
   const [countries, setCountries] = useState([]);
 
   const addCountry = (countryName) => {
-    const newCountry = { id: Date.now(), name: countryName };
+    const newCountry = { id: uuidv4(), name: countryName };
     setCountries((prevCountries) => [...prevCountries, newCountry]);
   };
 
   const deleteCountry = (countryId) => {
-    setCountries((prevCountries) =>
-      prevCountries.filter((country) => country.id !== countryId)
-    );
+    setCountries((prevCountries) => prevCountries.filter((country) => country.id !== countryId));
   };
 
   const editCountry = (countryId, newCountryName) => {
     setCountries((prevCountries) =>
-      prevCountries.map((country) =>
-        country.id === countryId ? { ...country, name: newCountryName } : country
-      )
+      prevCountries.map((country) => (country.id === countryId ? { ...country, name: newCountryName } : country))
     );
   };
 

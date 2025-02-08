@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useStateContext } from "../context/StateContext";
-import { useCountryContext } from "../context/CountryContext";
+import React, { useState, useContext } from "react";
+import StateContext from "../context/StateContext";
+import CountryContext from "../context/CountryContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const StateForm = () => {
-  const { addState } = useStateContext();
-  const { countries } = useCountryContext();
+  const { addState } = useContext(StateContext);
+  const { countries } = useContext(CountryContext);
   const [stateName, setStateName] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
 
@@ -44,7 +44,7 @@ const StateForm = () => {
               required
             >
               <option value="">Select Country</option>
-              {countries.map((country) => ( 
+              {countries.map((country) => (
                 <option key={country.id} value={country.id}>
                   {country.name}
                 </option>

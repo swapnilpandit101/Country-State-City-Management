@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState } from "react";
 import { useStateContext } from "./StateContext";
 
@@ -8,7 +9,9 @@ export const CityProvider = ({ children }) => {
   const [cities, setCities] = useState([]);
 
   const addCity = (cityName, stateId) => {
-    const newCity = { id: Date.now(), name: cityName, stateId };
+    if (!cityName.trim() || !stateId) return;
+
+    const newCity = { id: Date.now(), name: cityName, stateId: Number(stateId) };
     setCities((prevCities) => [...prevCities, newCity]);
   };
 

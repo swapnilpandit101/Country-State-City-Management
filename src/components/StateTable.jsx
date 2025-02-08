@@ -1,17 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import StateContext from "../context/StateContext";
 import CountryContext from "../context/CountryContext";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import * as bootstrap from "bootstrap";
 
 const StateTable = () => {
   const { states, deleteState, editState } = useContext(StateContext);
   const { countries } = useContext(CountryContext);
-
   const [editStateData, setEditStateData] = useState({ id: "", name: "" });
+  const modalRef = useRef(null);
 
   const handleEditClick = (state) => {
     setEditStateData(state);
-    new bootstrap.Modal(document.getElementById("editStateModal")).show();
+    const modal = new bootstrap.Modal(modalRef.current);
+    modal.show();
   };
 
   const handleSaveEdit = () => {
@@ -39,10 +42,16 @@ const StateTable = () => {
                   <td>{state.name}</td>
                   <td>{country ? country.name : "NA"}</td>
                   <td>
-                    <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditClick(state)}>
+                    <button
+                      className="btn btn-primary btn-sm me-2"
+                      onClick={() => handleEditClick(state)}
+                    >
                       Edit
                     </button>
-                    <button className="btn btn-danger btn-sm" onClick={() => deleteState(state.id)}>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => deleteState(state.id)}
+                    >
                       Delete
                     </button>
                   </td>
@@ -54,7 +63,7 @@ const StateTable = () => {
       </div>
 
       {/* Edit State Modal */}
-      <div className="modal fade" id="editStateModal" tabIndex="-1">
+      <div className="modal fade" id="editStateModal" ref={modalRef} tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -66,11 +75,18 @@ const StateTable = () => {
                 type="text"
                 className="form-control"
                 value={editStateData.name}
-                onChange={(e) => setEditStateData({ ...editStateData, name: e.target.value })}
+                onChange={(e) =>
+                  setEditStateData({ ...editStateData, name: e.target.value })
+                }
               />
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id="closeEditModal">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+                id="closeEditModal"
+              >
                 Close
               </button>
               <button type="button" className="btn btn-success" onClick={handleSaveEdit}>

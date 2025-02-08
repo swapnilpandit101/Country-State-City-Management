@@ -14,11 +14,11 @@ const CityForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (cityName.trim() && selectedState) {
-      addCity(cityName, selectedState);
-      setCityName("");
-      setSelectedState("");
-    }
+    if (!cityName.trim() || !selectedState) return;
+
+    addCity(cityName, selectedState);
+    setCityName("");
+    setSelectedState("");
   };
 
   return (
@@ -36,6 +36,7 @@ const CityForm = () => {
               required
             />
           </div>
+
           <div className="col-md-5">
             <select
               className="form-select form-select-sm"
@@ -48,12 +49,13 @@ const CityForm = () => {
                 const country = countries.find((c) => c.id === state.countryId);
                 return (
                   <option key={state.id} value={state.id}>
-                    {state.name} ({country ? country.name : "NA"})
+                    {state.name} {country ? `(${country.name})` : ""}
                   </option>
                 );
               })}
             </select>
           </div>
+
           <div className="col-md-2 text-end">
             <button type="submit" className="btn btn-success btn-sm px-4">
               Add City
